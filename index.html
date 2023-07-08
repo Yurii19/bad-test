@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    html {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      margin: 0 auto;
+    }
+    #input {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+      margin-bottom: 20px;
+    }
+
+    #input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border: none;
+      border-radius: 4px;
+      opacity: 0.8;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 1;
+    }
+
+    button:focus {
+      opacity: 1;
+      outline: none;
+    }
+
+    #start {
+      background-color: #007bff;
+    }
+    #clear {
+      background-color: #ff6600;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <textarea id="input" rows="4"></textarea>
+      <div class="controls">
+        <button id="start">Apply</button>
+        <button id="clear">Clear</button>
+        <span id="output">Output</span>
+      </div>
+    </div>
+    <script>
+      const btn = document.querySelector("#start");
+      const btnClear = document.querySelector("#clear");
+
+      btn.addEventListener("click", handler);
+      btnClear.addEventListener("click", () => {
+        const input = document.querySelector("#input");
+        const output = document.querySelector("#output");
+        output.innerHTML = "";
+        input.value = "";
+      });
+
+      function handler() {
+        const data = document.querySelector("#input").value;
+        const arrData = data
+          .replace(/,|\.|\?|\!|"/g, "")
+          .trim()
+          .split(" ")
+          .filter((el) => el !== "")
+          .map((el) => processWord(el.trim()));
+
+        const output = document.querySelector("#output");
+        output.innerHTML = processWord(arrData.toString());
+      }
+
+      function processWord(word) {
+        let res = "...";
+        Array.from(word)
+          .reverse()
+          .forEach((l) => {
+            try {
+              const match = Array.from(word.matchAll(l));
+              if (match.length === 1) {
+                res = l;
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        return res;
+      }
+    </script>
+  </body>
+</html>
